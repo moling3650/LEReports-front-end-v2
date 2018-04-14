@@ -41,15 +41,18 @@ export default {
         confirmButtonText: '取消',
         cancelButtonText: '删除',
         cancelButtonClass: 'el-button--danger',
+        showClose: false,
+        closeOnClickModal: false,
+        closeOnPressEscape: false,
+        closeOnHashChange: false,
         type: 'warning'
       })
         .then(() => this.$message.info({ message: '已取消删除', showClose: true, duration: 1500 }))
-        .catch(() => {
-          return this.$store.dispatch('deleteReportByCode', this.reportCode)
-            .then(() => this.$set(this, 'reportCode', ''))
-            .then(() => this.$message.success({ message: '删除成功!', showClose: true, duration: 1500 }))
-            .catch(() => this.$message.error({ message: '删除失败！', showClose: true, duration: 1500 }))
-        })
+        .catch(() => this.$store.dispatch('deleteReportByCode', this.reportCode)
+          .then(() => this.$set(this, 'reportCode', ''))
+          .then(() => this.$message.success({ message: '删除成功!', showClose: true, duration: 1500 }))
+          .catch(() => this.$message.error({ message: '删除失败！', showClose: true, duration: 1500 }))
+        )
     },
     handleOpenReport () {
       window.open(`${location.origin}${location.pathname}#/ReportQuerier?reportCode=${this.reportCode}`)
