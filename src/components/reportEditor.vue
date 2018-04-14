@@ -1,0 +1,59 @@
+<template>
+  <div id="reportEditor">
+    <el-row :gutter="20">
+      <el-col class="cell" :span="6">
+        <el-select v-model="reportCode" clearable filterable placeholder="请选择报表">
+          <el-option v-for="item in reportOptions" :key="item.value" :label="item.label" :value="item.value"/>
+        </el-select>
+      </el-col>
+      <el-col class="cell" :span="6">
+        <el-button-group>
+          <el-button @click="handleEditReport" :type="reportCode ? 'primary' : 'success'">
+            {{ reportCode ? '编辑' : '新建' }}报表
+          </el-button>
+          <el-button :disabled="!reportCode" @click="handleDeleteReport" type="danger">删除报表</el-button>
+          <el-button :disabled="!reportCode" @click="handleOpenReport">打开报表</el-button>
+        </el-button-group>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  name: 'reportEditor',
+  computed: mapGetters([
+    'reportOptions'
+  ]),
+  data () {
+    return {
+      reportCode: ''
+    }
+  },
+  methods: {
+    handleEditReport () {
+
+    },
+    handleDeleteReport () {
+      this.$confirm('此操作将永久删除该报表, 是否继续?', '提示', {
+        confirmButtonText: '取消',
+        cancelButtonText: '删除',
+        cancelButtonClass: 'el-button--danger',
+        type: 'warning'
+      })
+        .then(() => this.$message.info({ message: '已取消删除', showClose: true, duration: 1500 }))
+        .catch(() => {
+          return this.$store.dispatch('deleteReportByCode', this.reportCode)
+            .then(() => this.$set(this, 'reportCode', ''))
+            .then(() => this.$message.success({ message: '删除成功!', showClose: true, duration: 1500 }))
+            .catch(() => this.$message.error({ message: '删除失败！', showClose: true, duration: 1500 }))
+        })
+    },
+    handleOpenReport () {
+      window.open(`${location.origin}${location.pathname}#/ReportQuerier?reportCode=${this.reportCode}`)
+    }
+  }
+}
+</script>
