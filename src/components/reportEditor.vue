@@ -16,14 +16,20 @@
         </el-button-group>
       </el-col>
     </el-row>
+
+    <reportForm :reportCode.sync="reportCode" ref="reportDialog"/>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import reportForm from '@/components/Forms/reportForm'
 
 export default {
   name: 'reportEditor',
+  components: {
+    reportForm
+  },
   computed: mapGetters([
     'reportOptions'
   ]),
@@ -34,7 +40,7 @@ export default {
   },
   methods: {
     handleEditReport () {
-
+      this.$refs.reportDialog.open()
     },
     handleDeleteReport () {
       this.$confirm('此操作将永久删除该报表, 是否继续?', '提示', {
