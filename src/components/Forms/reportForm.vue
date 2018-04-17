@@ -8,7 +8,7 @@
         <el-form-item label="报表名称" :label-width="formLabelWidth" prop="report_name">
           <el-input v-model.trim="form.report_name"/>
         </el-form-item>
-        <el-form-item label="条件必输" :label-width="formLabelWidth" prop="query_type">
+        <el-form-item label="条件必输" :label-width="formLabelWidth" prop="query_type" required>
           <el-switch v-model="form.query_type" :active-value="1" :inactive-value="0"/>
         </el-form-item>
       </el-form>
@@ -79,7 +79,7 @@ export default {
           this.$message.success('保存成功!')
           this.$emit('update:reportCode', this.form.report_code)
           this.visible = false
-        })
+        }).catch(() => this.$message.error('保存失败！'))
       })
     }
   }
