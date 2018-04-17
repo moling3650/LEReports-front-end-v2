@@ -1,16 +1,19 @@
 <template>
   <div id="ReportBuilder">
     <reportEditor/>
+    <reportFieldEditor/>
   </div>
 </template>
 
 <script>
 import reportEditor from '@/components/reportEditor'
+import reportFieldEditor from '@/components/reportFieldEditor'
 
 export default {
   name: 'ReportBuilder',
   components: {
-    reportEditor
+    reportEditor,
+    reportFieldEditor
   },
   created () {
     this.$store.dispatch('fetchReports')
