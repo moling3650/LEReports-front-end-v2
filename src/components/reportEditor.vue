@@ -1,6 +1,6 @@
 <template>
-  <div id="reportEditor">
-    <el-row :gutter="20">
+  <div id="reportEditor" :style="{margin: '10px 0'}">
+    <el-row>
       <el-col class="cell" :span="6">
         <el-select v-model="reportCode" clearable filterable placeholder="请选择报表">
           <el-option v-for="item in reportOptions" :key="item.value" :label="item.label" :value="item.value"/>
@@ -36,6 +36,11 @@ export default {
   data () {
     return {
       reportCode: ''
+    }
+  },
+  watch: {
+    reportCode () {
+      this.$store.dispatch('fetchFieldsByReportCode', this.reportCode)
     }
   },
   methods: {
