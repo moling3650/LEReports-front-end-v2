@@ -1,15 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import createRouter from '@/lib/createRouter'
 
-Vue.use(Router)
-
-export default new Router({
+const routerConfig = {
   routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
+    'ReportBuilder',
+    'ReportQuerier'
   ]
-})
+}
+
+export default createRouter(routerConfig)
