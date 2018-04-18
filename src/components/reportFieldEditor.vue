@@ -30,11 +30,11 @@
     </el-table>
     <el-pagination
       v-if="fields.length" background
-      layout="prev, pager, next, total"
       :total="$store.getters.fields.length"
       :page-size="pageSize"
       :current-page.sync="index"
-      style="position: fixed;bottom: 10px;"
+      style="position: fixed;bottom: 20px; right: 10px"
+      layout="total, prev, pager, next"
     />
 
     <reportFieldForm ref="reportFieldDialog"/>
