@@ -55,8 +55,11 @@ export default {
     }
   },
   watch: {
-    '$store.getters.fields' () {
-      this.index = 1
+    '$store.getters.fieldsReload' () {
+      if (this.$store.getters.fieldsReload) {
+        this.index = 1
+        this.$store.commit('setFieldsReload', false)
+      }
     }
   },
   data () {
