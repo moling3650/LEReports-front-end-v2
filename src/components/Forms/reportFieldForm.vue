@@ -81,6 +81,9 @@ export default {
       }
       this.form.idx = parseInt(this.form.idx) || 1
       this.form.control_span = parseInt(this.form.control_span) || 6
+      if (this.form.control_code === 'mDatePicker') {
+        this.form.control_span = Math.max(this.form.control_span, 8)
+      }
       this.$store.dispatch('saveReportField', Object.assign({}, this.form)).then(() => {
         this.$message.success('保存成功!')
         this.visible = false
