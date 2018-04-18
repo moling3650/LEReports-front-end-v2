@@ -2,17 +2,20 @@ import api from '@/apis/reportField'
 
 // initial state
 const state = {
-  all: []
+  all: [],
+  reload: false
 }
 
 // getters
 const getters = {
-  fields: state => state.all
+  fields: state => state.all,
+  fieldsReload: state => state.reload
 }
 
 // actions
 const actions = {
   fetchFieldsByReportCode ({ commit }, reportCode) {
+    commit('setFieldsReload', true)
     if (!reportCode) {
       return commit('setFields', [])
     }
@@ -31,6 +34,9 @@ const mutations = {
   updateReportField (state, reportField) {
     const index = state.all.findIndex(rf => rf.prop === reportField.prop)
     ~index && state.all.splice(index, 1, reportField)
+  },
+  setFieldsReload (state, reload) {
+    state.reload = reload
   }
 }
 
