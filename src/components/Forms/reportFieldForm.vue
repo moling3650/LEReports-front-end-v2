@@ -5,17 +5,17 @@
         <el-row :gutter="30">
           <el-col :span="12">
             <el-form-item label="是否可见">
-              <el-switch v-model="form.state" :active-value="1" :inactive-value="0"/>
+              <el-switch v-model="form.state" :active-value="1" :inactive-value="0" @keyup.enter.native="saveReportField"/>
             </el-form-item>
             <template v-if="form.state">
               <el-form-item label="字段标签">
-                <el-input v-model.trim="form.label" placeholder="请输入标签"/>
+                <el-input v-model.trim="form.label" placeholder="请输入标签" @keyup.enter.native="saveReportField"/>
               </el-form-item>
               <el-form-item label="字段宽度">
-                <el-input v-model.trim="form.width" placeholder="为空时自适应"/>
+                <el-input v-model.trim="form.width" placeholder="为空时自适应" @keyup.enter.native="saveReportField"/>
               </el-form-item>
               <el-form-item label="字段排序">
-                <el-input v-model.number="form.idx" placeholder="请输入数字"/>
+                <el-input v-model.number="form.idx" placeholder="请输入数字" @keyup.enter.native="saveReportField"/>
               </el-form-item>
               <el-form-item label="字段对齐">
                 <el-select v-model="form.align" style="width: 100%;">
@@ -35,10 +35,10 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="控件宽度">
-                <el-input v-model.number="form.control_span" placeholder="请输入数字"/>
+                <el-input v-model.number="form.control_span" placeholder="请输入数字" @keyup.enter.native="saveReportField"/>
               </el-form-item>
               <el-form-item label="扩展参数">
-                <el-input v-model.trim="form.options_api"/>
+                <el-input v-model.trim="form.options_api" @keyup.enter.native="saveReportField"/>
               </el-form-item>
               <el-form-item label="是否必填">
                 <el-switch v-model="form.required" :active-value="1" :inactive-value="0"/>
