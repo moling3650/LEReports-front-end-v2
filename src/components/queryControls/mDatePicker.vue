@@ -3,8 +3,9 @@
     v-model="value"
     type="datetimerange"
     range-separator=" 至 "
-    start-placeholder="开始日期"
-    end-placeholder="结束日期"
+    :start-placeholder="`${label}（开始）`"
+    :end-placeholder="`${label}（结束）`"
+    style="width: 100%"
     @change="handleChange">
   </el-date-picker>
 </template>

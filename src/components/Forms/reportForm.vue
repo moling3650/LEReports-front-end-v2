@@ -6,7 +6,7 @@
           <el-input v-model.trim="form.report_code" :disabled="reportCode !== ''"/>
         </el-form-item>
         <el-form-item label="报表名称" :label-width="formLabelWidth" prop="report_name">
-          <el-input v-model.trim="form.report_name"/>
+          <el-input v-model.trim="form.report_name" @keyup.enter.native="saveReport"/>
         </el-form-item>
         <el-form-item label="条件必输" :label-width="formLabelWidth" prop="query_type" required>
           <el-switch v-model="form.query_type" :active-value="1" :inactive-value="0"/>
