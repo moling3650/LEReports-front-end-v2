@@ -75,15 +75,24 @@ export default {
       this.form = form
       this.visible = true
     },
-    saveReportField () {
+    _validForm () {
+      if (this.form.label === '') {
+        this.form.label = this.form.prop
+      }
       if (this.form.width !== '') {
-        this.form.width = (parseInt(this.form.width) || '').toString()
+        const width = parseInt(this.form.width)
+        this.form.width = (Number.isNaN(width) || width <= 0) ? '' : width.toString()
       }
       this.form.idx = parseInt(this.form.idx) || 1
-      this.form.control_span = parseInt(this.form.control_span) || 6
+      this.form.control_span = parseInt(this.form.control_span) || 6 // 处理用户输入非整数
+      this.form.control_span = Math.max(this.form.control_span, 4) // 处理用户输入太小的整数
+      this.form.control_span = Math.min(this.form.control_span, 24) // 处理用户输入太大的整数
       if (this.form.control_code === 'mDatePicker') {
-        this.form.control_span = Math.max(this.form.control_span, 8)
+        this.form.control_span = Math.max(this.form.control_span, 8) // 处理时间日期控件宽度太小的问题
       }
+    },
+    saveReportField () {
+      this._validForm()
       this.$store.dispatch('saveReportField', Object.assign({}, this.form)).then(() => {
         this.$message.success('保存成功!')
         this.visible = false
