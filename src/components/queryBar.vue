@@ -16,6 +16,7 @@ import mDatePicker from '@/components/queryControls/mDatePicker'
 import mInput from '@/components/queryControls/mInput'
 import mInputLike from '@/components/queryControls/mInputLike'
 import mInputMultiValue from '@/components/queryControls/mInputMultiValue'
+import mSelect from '@/components/queryControls/mSelect'
 export default {
   name: 'queryBar',
   props: {
@@ -28,7 +29,8 @@ export default {
     mDatePicker,
     mInput,
     mInputLike,
-    mInputMultiValue
+    mInputMultiValue,
+    mSelect
   },
   computed: {
     controls () {
