@@ -33,7 +33,7 @@ export default {
   created () {
     api.fetchOptions(this.ex).then(data => {
       if (!data) {
-        return this.$message.error({ message: '配置错误的SQL', showClose: true})
+        return this.$message.error({ message: '配置错误的SQL', showClose: true })
       }
       this.options = data.map(item => {
         let [value, label] = Object.values(item)
