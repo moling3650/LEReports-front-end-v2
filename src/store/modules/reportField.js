@@ -32,6 +32,21 @@ const getters = {
       idx: f.idx
     }
   })
+  }),
+  fieldsType: state => {
+    const types = {}
+    state.all.filter(f => f.state).map(f => {
+      const type = (f.options_api || '').toLowerCase().trim()
+      if (type.startsWith('decimal')) {
+        types[f.prop] = type.toUpperCase()
+      } else if (/^(\d{1,3}|datetime)$/i.test(type)) {
+        types[f.prop] = 'DATETIME'
+      } else {
+        types[f.prop] = 'STRING'
+      }
+    })
+    return types
+  }
 }
 
 // actions
