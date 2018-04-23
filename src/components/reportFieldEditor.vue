@@ -1,5 +1,6 @@
 <template>
   <div id="reportFieldEditor">
+    <el-button @click="handleEditLabels" :disabled="!fields.length">edit</el-button>
     <el-table v-loading="loading"
       element-loading-text="拼命加载中"
       element-loading-spinner="el-icon-loading"
@@ -38,16 +39,19 @@
     />
 
     <reportFieldForm ref="reportFieldDialog"/>
+    <labelsForm ref="labelsDialog"/>
   </div>
 </template>
 
 <script>
 import reportFieldForm from '@/components/Forms/reportFieldForm'
+import labelsForm from '@/components/Forms/labelsForm'
 
 export default {
   name: 'reportFieldEditor',
   components: {
-    reportFieldForm
+    reportFieldForm,
+    labelsForm
   },
   computed: {
     fields () {
@@ -72,6 +76,9 @@ export default {
   methods: {
     handleRowEdit (index, row) {
       this.$refs.reportFieldDialog.open({ ...row })
+    },
+    handleEditLabels () {
+      this.$refs.labelsDialog.open()
     },
     fmtWidth (row, col, value) {
       return value ? `${value}px` : '自适应'
