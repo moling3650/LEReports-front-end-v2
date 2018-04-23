@@ -8,7 +8,20 @@ function saveReportField (reportField) {
   return axios.post('/DataAPI/ReportData.ashx?method=updateReportField', { queryParams: reportField })
 }
 
+function updateFieldsLabel (payload) {
+  if (!payload.length) {
+    return Promise.resolve()
+  }
+  const queryParams = {}
+  const sql = payload.map((item, idx) => {
+    queryParams[`label${idx}`] = item.label
+    return `UPDATE B_Report_Field SET label = @label${idx} WHERE report_code = '${item.report_code}' AND prop = '${item.prop}'`
+  }).join(';')
+  return axios.post('/DataAPI/ReportData.ashx?method=updateFieldsLabel', { sql, queryParams })
+}
+
 export default {
   fetchFieldsByReportCode,
-  saveReportField
+  saveReportField,
+  updateFieldsLabel
 }
