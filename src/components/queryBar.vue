@@ -38,6 +38,9 @@ export default {
     },
     thead () {
       return this.$store.getters.thead
+    },
+    types () {
+      return this.$store.getters.fieldsType
     }
   },
   methods: {
@@ -52,7 +55,7 @@ export default {
           let str = ''
           if (item.type === 'mDatePicker') {
             str = `${item.prop} BETWEEN @start_${item.prop} AND @end_${item.prop}`
-            if (/[A-Z]/.test(item.prop[0])) {
+            if (this.types[item.prop] === 'DATETIME') {
               str = `CAST(${item.prop} AS DATETIME) BETWEEN @start_${item.prop} AND @end_${item.prop}`
             }
             paramMap[`start_${item.prop}`] = value[0]
@@ -77,7 +80,10 @@ export default {
         this.$message.error({ showClose: true, message: '至少输入一个条件查询' })
         isValid = false
       }
-      const fields = this.thead.map(th => th.prop).join(', ')
+      const types = this.types
+      const fields = this.thead
+        .map(th => types[th.prop] !== 'STRING' ? `CAST(${th.prop} AS ${types[th.prop]}) ${th.prop}` : th.prop)
+        .join(', ')
       const sql = `SELECT ${fields} FROM ${this.$route.query.reportCode}` + (paramList.length ? ` WHERE ${paramList.join(' AND ')}` : '')
       return isValid && { sql, queryParams: paramMap }
     },
