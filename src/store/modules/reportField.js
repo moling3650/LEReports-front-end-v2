@@ -31,7 +31,6 @@ const getters = {
       state: f.state,
       idx: f.idx
     }
-  })
   }),
   fieldsType: state => {
     const types = {}
@@ -60,6 +59,9 @@ const actions = {
   },
   saveReportField ({ commit }, reportField) {
     return api.saveReportField(reportField).then(() => commit('updateReportField', reportField))
+  },
+  updateFieldsLabel ({ commit }, fields) {
+    api.updateFieldsLabel(fields).then(() => commit('updateLabels', fields))
   }
 }
 
@@ -78,6 +80,12 @@ const mutations = {
   },
   updateFieldsState (state, checkList) {
     state.all.map(f => (f.state = checkList.find(c => c === f.prop) ? 1 : 0))
+  },
+  updateLabels (state, fields) {
+    fields.map(f => {
+      const index = state.all.findIndex(item => item.prop === f.prop)
+      ~index && (state.all[index].label = f.label)
+    })
   }
 }
 
