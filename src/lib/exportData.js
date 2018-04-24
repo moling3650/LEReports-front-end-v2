@@ -23,8 +23,12 @@ function exportXlsx (data, filename) {
   const blobObj = _toBlob(data)
   a.download = `${filename}.xlsx` // 下载名称
   a.href = URL.createObjectURL(blobObj) // 创建对象超链接绑定a标签
+  document.body.appendChild(a)
   a.click() // 模拟点击实现下载
-  setTimeout(_ => URL.revokeObjectURL(blobObj), 100) // 延时释放, 用URL.revokeObjectURL()来释放这个object URL
+  setTimeout(_ => {
+    URL.revokeObjectURL(blobObj)
+    document.body.removeChild(a)
+  }, 100) // 延时释放, 用URL.revokeObjectURL()来释放这个object URL
 }
 
 export {
