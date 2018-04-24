@@ -1,6 +1,8 @@
 <template>
   <div id="reportFieldEditor">
-    <el-button @click="handleEditLabels" :disabled="!fields.length">edit</el-button>
+    <el-button-group :style="{ float: 'right', margin: '5px' }">
+      <el-button size="mini" type="primary" @click="handleEditLabels" :disabled="!fields.length">批量编字段标签</el-button>
+    </el-button-group>
     <el-table v-loading="loading"
       element-loading-text="拼命加载中"
       element-loading-spinner="el-icon-loading"

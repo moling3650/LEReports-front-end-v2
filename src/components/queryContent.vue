@@ -1,6 +1,6 @@
 <template>
   <div id="queryContent">
-    <el-button-group :style="{ float: 'right', margin: '5px 0' }">
+    <el-button-group :style="{ float: 'right', margin: '5px' }">
       <el-button size="mini" type="primary" @click="handleSelectFields">筛选字段</el-button>
       <el-button size="mini" type="primary" @click="handleExport">导出</el-button>
     </el-button-group>

@@ -25,9 +25,14 @@
             </template>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="可否查询">
-              <el-switch v-model="form.is_check" :active-value="1" :inactive-value="0"/>
-            </el-form-item>
+            <template v-if="form.state">
+              <el-form-item label="可否查询">
+                <el-switch v-model="form.is_check" :active-value="1" :inactive-value="0"/>
+              </el-form-item>
+              <el-form-item label="扩展参数">
+                <el-input v-model.trim="form.options_api" @keyup.enter.native="saveReportField"/>
+              </el-form-item>
+            </template>
             <template v-if="form.is_check">
               <el-form-item label="控件名称">
                 <el-select v-model.trim="form.control_code" filterable style="width: 100%;">
@@ -36,9 +41,6 @@
               </el-form-item>
               <el-form-item label="控件宽度">
                 <el-input v-model.number="form.control_span" placeholder="请输入数字" @keyup.enter.native="saveReportField"/>
-              </el-form-item>
-              <el-form-item label="扩展参数">
-                <el-input v-model.trim="form.options_api" @keyup.enter.native="saveReportField"/>
               </el-form-item>
               <el-form-item label="是否必填">
                 <el-switch v-model="form.required" :active-value="1" :inactive-value="0"/>
