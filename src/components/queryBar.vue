@@ -17,6 +17,8 @@ import mInput from '@/components/queryControls/mInput'
 import mInputLike from '@/components/queryControls/mInputLike'
 import mInputMultiValue from '@/components/queryControls/mInputMultiValue'
 import mSelect from '@/components/queryControls/mSelect'
+import mSelectMultiValue from '@/components/queryControls/mSelectMultiValue'
+
 export default {
   name: 'queryBar',
   props: {
@@ -30,7 +32,8 @@ export default {
     mInput,
     mInputLike,
     mInputMultiValue,
-    mSelect
+    mSelect,
+    mSelectMultiValue
   },
   computed: {
     controls () {
@@ -63,7 +66,7 @@ export default {
           } else if (item.type === 'mInputLike') {
             str = `${item.prop} LIKE @${item.prop}`
             paramMap[item.prop] = `%${value}%`
-          } else if (item.type === 'mInputMultiValue') {
+          } else if (item.type.endsWith('MultiValue')) {
             str = `${item.prop} IN (${value.map((v, i) => `@${item.prop}${i}`).join(',')})`
             value.map((v, i) => (paramMap[`${item.prop}${i}`] = v))
           } else {
