@@ -18,6 +18,7 @@ import mInputLike from '@/components/queryControls/mInputLike'
 import mInputMultiValue from '@/components/queryControls/mInputMultiValue'
 import mSelect from '@/components/queryControls/mSelect'
 import mSelectMultiValue from '@/components/queryControls/mSelectMultiValue'
+import mCascader from '@/components/queryControls/mCascader'
 
 export default {
   name: 'queryBar',
@@ -33,7 +34,8 @@ export default {
     mInputLike,
     mInputMultiValue,
     mSelect,
-    mSelectMultiValue
+    mSelectMultiValue,
+    mCascader
   },
   computed: {
     controls () {
