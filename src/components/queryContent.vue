@@ -81,7 +81,12 @@ export default {
     },
     handleExport () {
       const data = [this.fields.map(f => f.label), ...this.data.map(row => this.fields.map(f => row[f.prop]))]
-      exportXlsx(data, this.$route.query.reportCode)
+      this.$prompt('', '请输入文件名', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /[\u4e00-\u9fa5\w]+/,
+        inputErrorMessage: '文件名格式不正确'
+      }).then(({ value }) => exportXlsx(data, value))
     }
   }
 }
