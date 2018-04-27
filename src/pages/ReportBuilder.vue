@@ -17,6 +17,7 @@ export default {
   },
   created () {
     this.$store.dispatch('fetchReports')
+    this.$store.dispatch('fetchChartTypes')
     window.document.title = '报表编辑器'
   }
 }
