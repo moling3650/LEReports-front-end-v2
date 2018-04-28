@@ -43,6 +43,7 @@ export default {
       return this.$message.error({message: '缺少报表编号', duration: 0})
     }
     this.$store.dispatch('fetchFieldsByReportCode', this.reportCode)
+    this.$store.dispatch('fetchChartsByReportCode', this.reportCode)
     reportApi.fetchReportByCode(this.reportCode).then(report => {
       window.document.title = report.report_name
       this.queryType = report.query_type
