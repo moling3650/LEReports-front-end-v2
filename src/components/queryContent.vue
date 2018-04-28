@@ -38,9 +38,9 @@
           :current-page.sync="index"/>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="折线图">
+      <el-tab-pane v-for="c in charts" :key="c.id" :label="c.name">
         <div class="tab-content">
-          <zLine :data="data" label="process_name" :values="[{code: 'type_id', name: '类型ID'}]"/>
+          <component :is="c.type" :data="data" :label="c.label" :values="c.value"/>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -52,12 +52,14 @@
 <script>
 import { exportXlsx } from '@/lib/exportData'
 import fieldsForm from '@/components/Forms/fieldsForm'
+import zBar from '@/components/Chart/zBar'
 import zLine from '@/components/Chart/zLine'
 
 export default {
   name: 'queryContent',
   components: {
     fieldsForm,
+    zBar,
     zLine
   },
   props: {
@@ -80,6 +82,9 @@ export default {
     },
     tableData () {
       return this.data.slice((this.index - 1) * this.pageSize, this.index * this.pageSize)
+    },
+    charts () {
+      return this.$store.getters.charts
     }
   },
   data () {
