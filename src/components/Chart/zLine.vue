@@ -47,11 +47,11 @@ export default {
           return
         }
         this.chart.resize()
-        const series = this.values.map(value => {
+        const series = this.values.filter(s => s && s.value && s.label).map(s => {
           return {
-            name: value.name,
+            name: s.label,
             type: 'line',
-            data: this.data.map(item => item[value.code])
+            data: this.data.map(item => item[s.value])
           }
         })
         const labels = this.data.map(d => d[this.label])
