@@ -8,7 +8,17 @@ const state = {
 // getters
 const getters = {
   chartOptions: state => state.all.map(c => ({ label: c.name, value: c.id })),
-  getChartByID: state => id => state.all.find(c => c.id === id)
+  getChartByID: state => id => state.all.find(c => c.id === id),
+  charts: (state, rootGetters) => state.all.filter(c => c.state).map(c => {
+    return {
+      id: c.id,
+      name: c.name,
+      type: c.chart_type_code,
+      label: c.label,
+      value: c.value.split(',').map(v => rootGetters.fieldOptions.find(f => f.value === v)),
+      state: c.state
+    }
+  })
 }
 
 // actions
