@@ -104,7 +104,7 @@ export default {
         name: chart.name || '',
         label: chart.label || '',
         value: chart.value ? chart.value.split(',') : [],
-        state: chart.state || 1
+        state: /^[01]$/.test(chart.state + '') ? chart.state : 1
       }
       this.visible = true
     },
