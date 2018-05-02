@@ -9,7 +9,7 @@
         </el-form-item>
         <el-form-item label="图表" prop="chart_type_code">
           <el-col :span="12">
-            <el-select v-model="form.chart_type_code" class="select" placeholder="请选择图表">
+            <el-select v-model="form.chart_type_code" class="select" placeholder="请选择图表" @change="handleChartTypeChange">
               <el-option
                 v-for="item in typeOptions"
                 :key="item.value"
@@ -33,7 +33,7 @@
         </el-form-item>
         <el-form-item label="数据" prop="value">
           <el-col :span="12">
-            <el-select v-model="form.value" class="select" multiple placeholder="请选择数据">
+            <el-select v-model="form.value" class="select" multiple :multiple-limit="form.chart_type_code === 'zPie' ? 1 : 0" placeholder="请选择数据">
               <el-option
                 v-for="item in fieldOptions"
                 :key="item.value"
@@ -96,6 +96,10 @@ export default {
     }
   },
   methods: {
+    handleChartTypeChange () {
+      this.form.label = ''
+      this.form.value = []
+    },
     open () {
       this.$refs.form && this.$refs.form.resetFields()
       const chart = Object.assign({}, this.$store.getters.getChartByID(this.chartId))
