@@ -1,7 +1,12 @@
 <template>
   <div id="fieldsForm">
     <el-dialog title="筛选字段" :visible.sync="visible" :close-on-click-modal="false">
-      <el-checkbox-group v-model="checkList">
+      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">
+        <el-badge :value="checkList.length" class="item">
+          <el-button type="text" @click="handleCheckAll">全选</el-button>
+        </el-badge>
+      </el-checkbox>
+      <el-checkbox-group v-model="checkList" @change="handleCheckedFieldsChange">
         <el-row :gutter="20">
           <el-col :span="8" v-for="f in options" :key="f.value">
             <el-checkbox :label="f.value">{{f.label}}</el-checkbox>
@@ -30,11 +35,28 @@ export default {
   data () {
     return {
       visible: false,
+      checkAll: true,
+      isIndeterminate: false,
       checkList: []
     }
   },
   methods: {
+    handleCheckAll () {
+      this.checkAll = !this.checkAll
+      this.handleCheckAllChange(this.checkAll)
+    },
+    handleCheckAllChange (val) {
+      this.checkList = val ? this.fields.filter(o => o.state).map(o => o.prop) : []
+      this.isIndeterminate = false
+    },
+    handleCheckedFieldsChange (value) {
+      let checkedCount = value.length
+      this.checkAll = checkedCount === this.fields.length
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.fields.length
+    },
     open () {
+      this.checkAll = true
+      this.isIndeterminate = false
       this.checkList = this.fields.filter(o => o.state).map(o => o.prop)
       this.visible = true
     },
