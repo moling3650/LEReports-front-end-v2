@@ -92,6 +92,11 @@ export default {
       index: 1
     }
   },
+  watch: {
+    data () {
+      this.index = 1
+    }
+  },
   methods: {
     handleTabClick (tab) {
       this.$nextTick(() => {
