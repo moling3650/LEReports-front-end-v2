@@ -52,6 +52,7 @@
 <script>
 import { exportXlsx } from '@/lib/exportData'
 import fieldsForm from '@/components/Forms/fieldsForm'
+import zPie from '@/components/Chart/zPie'
 import zBar from '@/components/Chart/zBar'
 import zLine from '@/components/Chart/zLine'
 
@@ -59,6 +60,7 @@ export default {
   name: 'queryContent',
   components: {
     fieldsForm,
+    zPie,
     zBar,
     zLine
   },
