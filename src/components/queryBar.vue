@@ -23,6 +23,10 @@ import mCascader from '@/components/queryControls/mCascader'
 export default {
   name: 'queryBar',
   props: {
+    report: {
+      type: String,
+      required: true
+    },
     queryType: {
       type: Number,
       default: 0
@@ -89,7 +93,7 @@ export default {
       const fields = this.thead
         .map(th => types[th.prop] !== 'STRING' ? `CAST(${th.prop} AS ${types[th.prop]}) ${th.prop}` : th.prop)
         .join(', ')
-      const sql = `SELECT ${fields} FROM ${this.$route.query.reportCode}` + (paramList.length ? ` WHERE ${paramList.join(' AND ')}` : '')
+      const sql = `SELECT ${fields} FROM ${this.report}` + (paramList.length ? ` WHERE ${paramList.join(' AND ')}` : '')
       return isValid && { sql, queryParams: paramMap }
     },
     search () {
