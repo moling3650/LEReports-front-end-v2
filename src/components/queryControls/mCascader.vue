@@ -4,6 +4,7 @@
     :options="options"
     :show-all-levels="true"
     :placeholder="`请选择${label}`"
+    @change="$emit('change', value)"
     clearable
     expand-trigger="hover"
     style="width: 100%"
