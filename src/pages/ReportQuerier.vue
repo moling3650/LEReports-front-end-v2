@@ -1,6 +1,6 @@
 <template>
   <div id="ReportQuerier">
-  <queryBar :queryType="queryType" @search="search"/>
+  <queryBar :queryType="queryType" :report="reportCode" @search="search"/>
   <queryContent :loading="loading" :data="records"/>
   </div>
 </template>
@@ -17,9 +17,15 @@ export default {
     queryBar,
     queryContent
   },
+  props: {
+    code: {
+      type: String,
+      default: ''
+    }
+  },
   computed: {
     reportCode () {
-      return this.$route.query.reportCode
+      return this.code || this.$route.query.reportCode
     }
   },
   data () {
@@ -29,7 +35,24 @@ export default {
       records: []
     }
   },
+  watch: {
+    reportCode () {
+      this.init()
+    }
+  },
   methods: {
+    init () {
+      this.records = []
+      if (!this.reportCode) {
+        return this.$message.error({message: '缺少报表编号', duration: 1500})
+      }
+      this.$store.dispatch('fetchFieldsByReportCode', this.reportCode)
+      this.$store.dispatch('fetchChartsByReportCode', this.reportCode)
+      reportApi.fetchReportByCode(this.reportCode).then(report => {
+        window.document.title = report.report_name
+        this.queryType = report.query_type
+      })
+    },
     search (payload) {
       this.loading = true
       api.fetchData(payload).then(data => {
@@ -39,15 +62,7 @@ export default {
     }
   },
   created () {
-    if (!this.reportCode) {
-      return this.$message.error({message: '缺少报表编号', duration: 0})
-    }
-    this.$store.dispatch('fetchFieldsByReportCode', this.reportCode)
-    this.$store.dispatch('fetchChartsByReportCode', this.reportCode)
-    reportApi.fetchReportByCode(this.reportCode).then(report => {
-      window.document.title = report.report_name
-      this.queryType = report.query_type
-    })
+    this.init()
   }
 }
 </script>
