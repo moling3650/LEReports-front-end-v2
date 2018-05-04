@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="value" :placeholder="`请选择${label}`" clearable filterable style="width: 100%">
+  <el-select v-model="value" :placeholder="`请选择${label}`" clearable filterable style="width: 100%" @change="$emit('change', value)">
     <el-option
       v-for="item in options"
       :key="item.value"
