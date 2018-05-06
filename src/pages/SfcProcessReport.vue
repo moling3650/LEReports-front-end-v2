@@ -34,7 +34,7 @@ export default {
       dialogVisible: false,
       sfc: '',
       processName: '',
-      tableFields: ['工单', '条码'],
+      tableFields: ['工单', '条码', '工序组', '工序', '工站', '生产时间', '结果', '员工'],
       tableData: [],
       subTableFileds: [],
       subTableData: []
@@ -45,6 +45,8 @@ export default {
       api.fetchDataBySFC(this.sfc).then(data => {
         if (data.length) {
           this.tableFields = Object.keys(data[0])
+        } else {
+          this.$message.error('没有查询到数据')
         }
         this.tableData = data
       })
@@ -86,8 +88,6 @@ export default {
 }
 
 .table-wrap {
-  /*height: 500px;*/
   margin-top: 5px;
-  /*overflow-y: scroll;*/
 }
 </style>
