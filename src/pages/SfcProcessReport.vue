@@ -1,6 +1,6 @@
 <template>
   <div id="SfcProcessReport">
-    <el-row :gutter="20">
+    <el-row :gutter="10">
       <el-col :span="6">
         <el-input v-model.trim="sfc" @keyup.enter.native="search"/>
       </el-col>
@@ -9,17 +9,17 @@
       </el-col>
     </el-row>
     <div class="table-wrap">
-      <el-table :data="tableData" border stripe size="mini" height="500"
+      <el-table :data="tableData" border stripe size="mini" height="400"
         :header-cell-style="{backgroundColor: '#409eff', color: '#fff'}"
         @row-dblclick="handleDbclick">
         <el-table-column v-for="f in tableFields" :key="f" :prop="f" :label="f"/>
       </el-table>
     </div>
     <el-dialog :title="processName" :visible.sync="dialogVisible" :fullscreen="true">
-      <el-button-group :style="{ float: 'right', margin: '-30px 5px 0' }">
+      <el-button-group :style="{ float: 'right', margin: '-30px 0px 0' }">
         <el-button size="mini" type="primary" @click="handleExport">导出</el-button>
       </el-button-group>
-      <el-table :data="subTableData" border stripe size="mini" height="600"
+      <el-table :data="subTableData" border stripe size="mini" height="400"
         :header-cell-style="{backgroundColor: '#409eff', color: '#fff'}">
         <el-table-column  v-for="f in subTableFileds" :key="f.prop" :prop="f.prop" :label="f.label"/>
       </el-table>
