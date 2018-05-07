@@ -55,7 +55,7 @@ function fetchDataBySFC (sfc) {
   LEFT JOIN B_WorkGroup W ON W.group_code = PL.group_code
   LEFT JOIN B_StationList S ON S.station_code = D.STATION_CODE
   WHERE SFC_NO = @sfc
-  ORDER BY W.group_code, PL.idx`
+  ORDER BY CAST(D.DC_TIME AS DATETIME)`
   return axios.post('/DataAPI/ReportData.ashx?method=FetchData', {sql, queryParams: {sfc}}).then(res => res.data)
 }
 
