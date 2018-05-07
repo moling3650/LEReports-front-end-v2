@@ -16,6 +16,9 @@
       </el-table>
     </div>
     <el-dialog :title="processName" :visible.sync="dialogVisible" :fullscreen="true">
+      <el-button-group :style="{ float: 'right', margin: '-30px 5px 0' }">
+        <el-button size="mini" type="primary" @click="handleExport">导出</el-button>
+      </el-button-group>
       <el-table :data="subTableData" border stripe size="mini" height="600"
         :header-cell-style="{backgroundColor: '#409eff', color: '#fff'}">
         <el-table-column  v-for="f in subTableFileds" :key="f.prop" :prop="f.prop" :label="f.label"/>
@@ -25,7 +28,8 @@
 </template>
 
 <script>
-import api from '../apis/sfcDcProcess'
+import api from '@/apis/sfcDcProcess'
+import { exportXlsx } from '@/lib/exportData'
 
 export default {
   name: 'SfcProcessReport',
@@ -50,6 +54,15 @@ export default {
         }
         this.tableData = data
       })
+    },
+    handleExport () {
+      const data = [this.subTableFileds.map(f => f.label), ...this.subTableData.map(row => this.subTableFileds.map(f => row[f.prop]))]
+      this.$prompt('', '请输入文件名', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /[\u4e00-\u9fa5\w]+/,
+        inputErrorMessage: '文件名格式不正确'
+      }).then(({ value }) => exportXlsx(data, value))
     },
     handleDbclick ({'条码': sfc, '工序': processName}) {
       if (this.processName === processName) {
