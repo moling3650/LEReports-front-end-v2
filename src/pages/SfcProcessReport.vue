@@ -62,7 +62,7 @@ export default {
         cancelButtonText: '取消',
         inputPattern: /[\u4e00-\u9fa5\w]+/,
         inputErrorMessage: '文件名格式不正确'
-      }).then(({ value }) => exportXlsx(data, value))
+      }).then(({ value: filename }) => exportXlsx(data, filename))
     },
     handleDbclick ({'条码': sfc, '工序': processName}) {
       if (this.processName === processName) {
