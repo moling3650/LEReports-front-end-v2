@@ -93,7 +93,10 @@ export default {
       const fields = this.thead
         .map(th => types[th.prop] !== 'STRING' ? `CAST(${th.prop} AS ${types[th.prop]}) ${th.prop}` : th.prop)
         .join(', ')
-      const sql = `SELECT ${fields} FROM ${this.report}` + (paramList.length ? ` WHERE ${paramList.join(' AND ')}` : '')
+      let sql = `SELECT ${fields} FROM ${this.report}` + (paramList.length ? ` WHERE ${paramList.join(' AND ')}` : '')
+      if (this.report === 'V_SFC_DC_CELL_GROUP') {
+        sql += ' ORDER BY PEARL_BATCH, CAST(DC_TIME AS DATETIME)'
+      }
       return isValid && { sql, queryParams: paramMap }
     },
     search () {
