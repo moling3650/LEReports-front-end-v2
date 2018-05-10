@@ -24,6 +24,7 @@
                 :label="f.label"
                 :width="f.width"
                 :align="f.align"
+                :formatter="fieldFormatter"
                 show-overflow-tooltip
               />
             </el-table>
@@ -50,6 +51,7 @@
 </template>
 
 <script>
+import api from '@/apis'
 import { exportXlsx } from '@/lib/exportData'
 import fieldsForm from '@/components/Forms/fieldsForm'
 import zPie from '@/components/Chart/zPie'
@@ -91,6 +93,8 @@ export default {
   },
   data () {
     return {
+      processMap: {},
+      // productMap: {},
       index: 1
     }
   },
@@ -116,7 +120,27 @@ export default {
         inputPattern: /[\u4e00-\u9fa5\w]+/,
         inputErrorMessage: '文件名格式不正确'
       }).then(({ value }) => exportXlsx(data, value))
+    },
+    fieldFormatter (row, column, key) {
+      if (column.label === '工序') {
+        return this.processMap[key] || key
+      // } else if (column.label === 'OPERATION_NO') {
+      //   return this.productMap[key] || key
+      }
+      return key
     }
+  },
+  created () {
+    api.fetchOptions('SELECT process_code, process_name FROM B_ProcessList').then(data => {
+      data.map(item => {
+        this.processMap[item.process_code] = item.process_name
+      })
+    })
+    // api.fetchOptions('SELECT product_code, product_name FROM B_Product').then(data => {
+    //   data.map(item => {
+    //     this.productMap[item.product_code] = item.product_name
+    //   })
+    // })
   }
 }
 </script>
