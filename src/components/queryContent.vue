@@ -7,7 +7,7 @@
     <el-tabs type="border-card" style="margin-top: 30px;" @tab-click="handleTabClick">
       <el-tab-pane label="数据表格">
         <div class="z-table tab-content">
-          <div class="table-wrap" :style="{ height: (pageSize + 2) * 36 + 50 + 'px'}">
+          <div class="table-wrap" :style="{ height: '100%'}">
             <el-table v-loading="loading"
               :data="tableData" border stripe size="mini"
               :header-cell-style="{backgroundColor: '#409eff', color: '#fff'}"
@@ -15,6 +15,7 @@
               element-loading-spinner="el-icon-loading"
               element-loading-background="rgba(0, 0, 0, 0.8)"
               style="width: 100%"
+              height="430px"
               tooltip-effect="dark"
             >
               <el-table-column v-for="f in fields"
