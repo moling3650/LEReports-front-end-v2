@@ -11,6 +11,11 @@
         <el-form-item label="条件必输" prop="query_type" required>
           <el-switch v-model="form.query_type" :active-value="1" :inactive-value="0"/>
         </el-form-item>
+        <el-form-item label="SQL" prop="orderBy">
+          <el-input placeholder="请输入排序语句" v-model.trim="form.orderBy">
+            <template slot="prepend">SELECT {fields} FROM {{form.report_code}} {where}</template>
+          </el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="visible = false">取 消</el-button>
@@ -67,6 +72,7 @@ export default {
     open () {
       this.$refs.form && this.$refs.form.resetFields()
       this.form = this.$store.getters.getReportByCode(this.reportCode)
+      this.form.orderBy = this.form.query_sql ? this.form.query_sql.replace(/.+{where}(\s+)?/, '') : ''
       this.visible = true
     },
     saveReport () {
@@ -74,6 +80,7 @@ export default {
         if (!valid) {
           return false
         }
+        this.form.query_sql = `SELECT {fields} FROM ${this.form.report_code} {where} ${this.form.orderBy}`
         this.$store.dispatch('saveReport', Object.assign({}, this.form)).then(() => {
           this.$message.success('保存成功!')
           this.$emit('update:reportCode', this.form.report_code)
