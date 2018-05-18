@@ -1,9 +1,9 @@
 <template>
   <div id="reportFieldEditor">
-    <el-button-group :style="{ float: 'right', margin: '5px' }">
+    <el-button-group class="btn-group">
       <el-button size="mini" type="primary" @click="handleEditLabels" :disabled="!fields.length">批量编字段标签</el-button>
     </el-button-group>
-    <div class="table-wrap" style="position: relative;height: 530px">
+    <div class="table-wrap">
       <el-table v-loading="loading"
         element-loading-text="拼命加载中"
         element-loading-spinner="el-icon-loading"
@@ -101,3 +101,17 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.btn-group {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+}
+
+.table-wrap {
+  position: relative;
+  height: 530px;
+  top: 30px;
+}
+</style>
