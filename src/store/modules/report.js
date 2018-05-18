@@ -20,7 +20,6 @@ const actions = {
     return api.deleteReportByCode(code).then(() => commit('removeReportByCode', code))
   },
   saveReport ({ commit }, report) {
-    report.query_sql = `SELECT * FROM ${report.report_code}`
     return api.saveReport(report).then(() => commit('updateReport', report))
   },
   validReportCode ({ commit }, code) {
