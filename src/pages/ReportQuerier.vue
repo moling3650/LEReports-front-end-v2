@@ -1,6 +1,6 @@
 <template>
   <div id="ReportQuerier">
-  <queryBar :queryType="queryType" :report="reportCode" @search="search"/>
+  <queryBar :queryType="queryType" :querySQL="querySQL"  :report="reportCode" @search="search"/>
   <queryContent :loading="loading" :data="records"/>
   </div>
 </template>
@@ -31,6 +31,7 @@ export default {
   data () {
     return {
       queryType: 0,
+      querySQL: '',
       loading: false,
       records: []
     }
@@ -51,6 +52,7 @@ export default {
       reportApi.fetchReportByCode(this.reportCode).then(report => {
         window.document.title = report.report_name
         this.queryType = report.query_type
+        this.querySQL = report.query_sql
       })
     },
     search (payload) {

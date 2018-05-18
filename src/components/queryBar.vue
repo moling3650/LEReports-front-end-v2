@@ -30,6 +30,10 @@ export default {
     queryType: {
       type: Number,
       default: 0
+    },
+    querySQL: {
+      type: String,
+      required: true
     }
   },
   components: {
@@ -93,10 +97,11 @@ export default {
       const fields = this.thead
         .map(th => types[th.prop] !== 'STRING' ? `CAST(${th.prop} AS ${types[th.prop]}) ${th.prop}` : th.prop)
         .join(', ')
-      let sql = `SELECT ${fields} FROM ${this.report}` + (paramList.length ? ` WHERE ${paramList.join(' AND ')}` : '')
-      if (this.report === 'V_SFC_DC_CELL_GROUP') {
-        sql += ' ORDER BY PEARL_BATCH, CAST(DC_TIME AS DATETIME)'
-      }
+      const where = paramList.length ? `WHERE ${paramList.join(' AND ')}` : ''
+      let sql = this.querySQL.replace('{fields}', fields).replace('{where}', where)
+      // if (this.report === 'V_SFC_DC_CELL_GROUP') {
+      //   sql += ' ORDER BY PEARL_BATCH, CAST(DC_TIME AS DATETIME)'
+      // }
       return isValid && { sql, queryParams: paramMap }
     },
     search () {
