@@ -1,15 +1,20 @@
 <template>
   <div id="reportForm">
     <el-dialog :title="reportCode ? '编辑报表' : '新建报表'" :visible.sync="visible" :close-on-click-modal="false">
-      <el-form :model="form" :rules="rules" ref="form">
-        <el-form-item label="报表编号" :label-width="formLabelWidth" prop="report_code">
+      <el-form :model="form" :rules="rules" label-width="100px" ref="form">
+        <el-form-item label="报表编号" prop="report_code">
           <el-input v-model.trim="form.report_code" :disabled="reportCode !== ''"/>
         </el-form-item>
-        <el-form-item label="报表名称" :label-width="formLabelWidth" prop="report_name">
+        <el-form-item label="报表名称" prop="report_name">
           <el-input v-model.trim="form.report_name" @keyup.enter.native="saveReport"/>
         </el-form-item>
-        <el-form-item label="条件必输" :label-width="formLabelWidth" prop="query_type" required>
+        <el-form-item label="条件必输" prop="query_type" required>
           <el-switch v-model="form.query_type" :active-value="1" :inactive-value="0"/>
+        </el-form-item>
+        <el-form-item label="SQL" prop="orderBy">
+          <el-input placeholder="请输入排序语句" v-model.trim="form.orderBy">
+            <template slot="prepend">SELECT {fields} FROM {{form.report_code}} {where}</template>
+          </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -53,7 +58,6 @@ export default {
     return {
       visible: false,
       form: {},
-      formLabelWidth: '100px',
       rules: {
         report_code: [
           { required: true, validator: checkReportCode, trigger: 'blur' }
@@ -68,6 +72,7 @@ export default {
     open () {
       this.$refs.form && this.$refs.form.resetFields()
       this.form = this.$store.getters.getReportByCode(this.reportCode)
+      this.form.orderBy = this.form.query_sql ? this.form.query_sql.replace(/.+{where}(\s+)?/, '') : ''
       this.visible = true
     },
     saveReport () {
@@ -75,6 +80,7 @@ export default {
         if (!valid) {
           return false
         }
+        this.form.query_sql = `SELECT {fields} FROM ${this.form.report_code} {where} ${this.form.orderBy}`
         this.$store.dispatch('saveReport', Object.assign({}, this.form)).then(() => {
           this.$message.success('保存成功!')
           this.$emit('update:reportCode', this.form.report_code)
