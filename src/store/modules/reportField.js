@@ -35,10 +35,10 @@ const getters = {
   fieldsType: state => {
     const types = {}
     state.all.filter(f => f.state).map(f => {
-      const type = (f.options_api || '').toLowerCase().trim()
-      if (type.startsWith('decimal')) {
-        types[f.prop] = type.toUpperCase()
-      } else if (/^(\d{1,3}|datetime)$/i.test(type)) {
+      const type = (f.options_api || '').toUpperCase().trim()
+      if (type.startsWith('DECIMAL')) {
+        types[f.prop] = 'DECIMAL'
+      } else if (/^(\d{1,3}|DATETIME)$/i.test(type)) {
         types[f.prop] = 'DATETIME'
       } else {
         types[f.prop] = 'STRING'
