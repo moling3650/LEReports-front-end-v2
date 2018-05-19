@@ -57,6 +57,13 @@ export default {
     }
   },
   methods: {
+    _propToField (prop) {
+      const type = this.types[prop]
+      return {
+        DATETIME: `CAST(${prop} AS DATETIME) AS [${prop}]`,
+        DECIMAL: `dbo.ToDecimal(${prop}) AS [${prop}]`
+      }[type] || `[${prop}]`
+    },
     _getQueryParams () {
       let paramList = []
       let paramMap = {}
@@ -93,10 +100,8 @@ export default {
         this.$message.error({ showClose: true, message: '至少输入一个条件查询' })
         isValid = false
       }
-      const types = this.types
-      const fields = this.thead
-        .map(th => types[th.prop] !== 'STRING' ? `CAST(${th.prop} AS ${types[th.prop]}) ${th.prop}` : th.prop)
-        .join(', ')
+
+      const fields = this.thead.map(({ prop }) => this._propToField(prop)).join(', ')
       const where = paramList.length ? `WHERE ${paramList.join(' AND ')}` : ''
       let sql = this.querySQL.replace('{fields}', fields).replace('{where}', where)
       // if (this.report === 'V_SFC_DC_CELL_GROUP') {
