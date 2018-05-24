@@ -16,6 +16,7 @@ import mDatePicker from '@/components/queryControls/mDatePicker'
 import mInput from '@/components/queryControls/mInput'
 import mInputLike from '@/components/queryControls/mInputLike'
 import mInputMultiValue from '@/components/queryControls/mInputMultiValue'
+import mInputGreaterThan from '@/components/queryControls/mInputGreaterThan'
 import mSelect from '@/components/queryControls/mSelect'
 import mSelectMultiValue from '@/components/queryControls/mSelectMultiValue'
 import mCascader from '@/components/queryControls/mCascader'
@@ -41,6 +42,7 @@ export default {
     mInput,
     mInputLike,
     mInputMultiValue,
+    mInputGreaterThan,
     mSelect,
     mSelectMultiValue,
     mCascader
@@ -71,7 +73,7 @@ export default {
       this.controls.forEach(item => {
         let value = this.$refs[item.prop][0].value
 
-        if (value) {
+        if (value || value === 0) {
           let str = ''
           if (item.type === 'mDatePicker') {
             str = `${item.prop} BETWEEN @start_${item.prop} AND @end_${item.prop}`
@@ -83,14 +85,19 @@ export default {
           } else if (item.type === 'mInputLike') {
             str = `${item.prop} LIKE @${item.prop}`
             paramMap[item.prop] = `%${value}%`
+          } else if (item.type === 'mInputGreaterThan') {
+            str = `${item.prop} >= @${item.prop}`
+            paramMap[item.prop] = value
           } else if (item.type.endsWith('MultiValue')) {
-            str = `${item.prop} IN (${value.map((v, i) => `@${item.prop}${i}`).join(',')})`
-            value.map((v, i) => (paramMap[`${item.prop}${i}`] = v))
+            if (value.length) {
+              str = `${item.prop} IN (${value.map((v, i) => `@${item.prop}${i}`).join(',')})`
+              value.map((v, i) => (paramMap[`${item.prop}${i}`] = v))
+            }
           } else {
             str = `${item.prop} = @${item.prop}`
             paramMap[item.prop] = value
           }
-          paramList.push(str)
+          str && paramList.push(str)
         } else if (item.required) {
           this.$message.error(`${item.label}为必填字段`)
           isValid = false
