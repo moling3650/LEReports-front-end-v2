@@ -114,7 +114,10 @@ export default {
       this.$refs.fieldsDialog.open()
     },
     handleExport () {
-      const data = [this.fields.map(f => f.label), ...this.data.map(row => this.fields.map(f => row[f.prop]))]
+      const data = [
+        this.fields.map(f => f.label),
+        ...this.data.map(row => this.fields.map(f => this.fieldFormatter(null, f, row[f.prop])))
+      ]
       this.$prompt('', '请输入文件名', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -125,8 +128,8 @@ export default {
     fieldFormatter (row, column, key) {
       if (column.label === '工序') {
         return this.processMap[key] || key
-      // } else if (column.label === 'OPERATION_NO') {
-      //   return this.productMap[key] || key
+      } else if (column.label === '班别') {
+        return { B: '白班', Y: '夜班' }[key] || key
       }
       return key
     }
