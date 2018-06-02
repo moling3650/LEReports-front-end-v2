@@ -63,7 +63,7 @@ export default {
       const type = this.types[prop]
       return {
         DATETIME: `CAST(${prop} AS DATETIME) AS [${prop}]`,
-        DECIMAL: `dbo.ToDecimal(${prop}) AS [${prop}]`
+        DECIMAL: `dbo.ToFloat(${prop}) AS [${prop}]`
       }[type] || `[${prop}]`
     },
     _getQueryParams () {
