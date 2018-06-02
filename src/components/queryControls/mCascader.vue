@@ -6,6 +6,7 @@
     :placeholder="`请选择${label}`"
     @change="$emit('change', value)"
     clearable
+    filterable
     expand-trigger="hover"
     style="width: 100%"
   />
