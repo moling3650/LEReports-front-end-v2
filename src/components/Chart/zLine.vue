@@ -86,8 +86,8 @@ export default {
             data: labels
           },
           yAxis: {
-            max: value => value.max + (value.max - value.min) / 4,
-            min: value => value.min - (value.max - value.min) / 4
+            max: value => Math.round(value.max + (value.max - value.min) / 4),
+            min: value => Math.round(value.min - (value.max - value.min) / 4)
           },
           series
         }, true)
