@@ -23,7 +23,13 @@ function fetchOptions (sql) {
   return axios.get(`/DataAPI/Commom.ashx?ActType=GetOptions&sql=${sql}`).then(res => res.data)
 }
 
+function fetchSubReportsByReportCode (reportCode) {
+  const url = `/DataAPI/Commom.ashx?ActType=GetSubReportsByReportCode&reportCode=${reportCode}`
+  return axios.get(url).then(res => res.data)
+}
+
 export default {
+  fetchSubReportsByReportCode,
   fetchQueryControls,
   fetchChartTypes,
   fetchData,
