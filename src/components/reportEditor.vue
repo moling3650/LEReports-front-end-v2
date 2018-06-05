@@ -1,12 +1,12 @@
 <template>
   <div id="reportEditor" :style="{margin: '10px 0'}">
     <el-row>
-      <el-col class="cell" :span="6">
+      <el-col class="cell" :span="5">
         <el-select v-model="reportCode" clearable filterable placeholder="请选择报表" style="width: 95%">
           <el-option v-for="item in reportOptions" :key="item.value" :label="item.label" :value="item.value"/>
         </el-select>
       </el-col>
-      <el-col class="cell" :span="6">
+      <el-col class="cell" :span="8">
         <el-button-group>
           <el-button @click="handleEditReport" :type="reportCode ? 'primary' : 'success'">
             {{ reportCode ? '编辑' : '新建' }}报表
@@ -16,7 +16,7 @@
         </el-button-group>
       </el-col>
 
-      <el-col v-show="reportCode" class="cell" :span="6">
+      <el-col v-show="reportCode" class="cell" :span="5">
         <el-select v-model="chartId" clearable filterable placeholder="请选择图表" style="width: 95%">
           <el-option v-for="item in chartOptions" :key="item.value" :label="item.label" :value="item.value"/>
         </el-select>
