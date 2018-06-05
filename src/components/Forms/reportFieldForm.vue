@@ -51,6 +51,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="visible = false">取 消</el-button>
+        <el-button type="danger" @click="deleteReportField">删 除</el-button>
         <el-button type="primary" @click="saveReportField">确 定</el-button>
       </div>
     </el-dialog>
@@ -63,6 +64,9 @@ export default {
   computed: {
     queryControls () {
       return this.$store.getters.queryControls
+    },
+    isCustom () {
+      return this.form.report_code && this.form.report_code.startsWith('Z_')
     }
   },
   data () {
@@ -92,6 +96,26 @@ export default {
       if (this.form.control_code === 'mDatePicker') {
         this.form.control_span = Math.max(this.form.control_span, 8) // 处理时间日期控件宽度太小的问题
       }
+    },
+    deleteReportField () {
+      this.$confirm('此操作将永久删除该字段, 是否继续?', '提示', {
+        confirmButtonText: '取消',
+        cancelButtonText: '删除',
+        cancelButtonClass: 'el-button--danger',
+        showClose: false,
+        closeOnClickModal: false,
+        closeOnPressEscape: false,
+        closeOnHashChange: false,
+        type: 'warning'
+      })
+        .then(() => this.$message.info({ message: '已取消删除', showClose: true, duration: 1500 }))
+        .catch(() => this.$store.dispatch('deleteReportField', {...this.form})
+          .then(() => {
+            this.$message.success({ message: '删除成功!', showClose: true, duration: 1500 })
+            this.visible = false
+          })
+          .catch(() => this.$message.error({ message: '删除失败！', showClose: true, duration: 1500 }))
+        )
     },
     saveReportField () {
       this._validForm()
