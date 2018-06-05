@@ -28,6 +28,20 @@
                 :formatter="fieldFormatter"
                 show-overflow-tooltip
               />
+              <el-table-column
+                v-if="subReports.length"
+                fixed="right"
+                label="子查询"
+                :width="subReports.length * 60">
+                <template slot-scope="scope">
+                  <el-button v-for="s in subReports"
+                    :key="s.btn_text"
+                    @click="handleClick(s.btn_text, s.sql, scope.row)"
+                    type="text" size="small"
+                  >{{s.btn_text}}
+                  </el-button>
+                </template>
+              </el-table-column>
             </el-table>
           </div>
           <el-pagination
@@ -48,12 +62,14 @@
     </el-tabs>
 
     <fieldsForm ref="fieldsDialog"/>
+    <subReport ref="subReport"/>
   </div>
 </template>
 
 <script>
 import api from '@/apis'
 import { exportXlsx } from '@/lib/exportData'
+import subReport from '@/components/subReport'
 import fieldsForm from '@/components/Forms/fieldsForm'
 import zPie from '@/components/Chart/zPie'
 import zBar from '@/components/Chart/zBar'
@@ -62,6 +78,7 @@ import zLine from '@/components/Chart/zLine'
 export default {
   name: 'queryContent',
   components: {
+    subReport,
     fieldsForm,
     zPie,
     zBar,
@@ -96,7 +113,8 @@ export default {
     return {
       processMap: {},
       // productMap: {},
-      index: 1
+      index: 1,
+      subReports: []
     }
   },
   watch: {
@@ -105,6 +123,9 @@ export default {
     }
   },
   methods: {
+    handleClick (title, sql, row) {
+      this.$refs.subReport.open(title, sql, row)
+    },
     handleTabClick (tab) {
       this.$nextTick(() => {
         tab.$children.filter(c => c.chart && c.chart.resize).map(c => c.chart.resize())
@@ -139,6 +160,9 @@ export default {
       data.map(item => {
         this.processMap[item.process_code] = item.process_name
       })
+    })
+    api.fetchSubReportsByReportCode(this.$route.query.reportCode).then(data => {
+      this.subReports = data
     })
     // api.fetchOptions('SELECT product_code, product_name FROM B_Product').then(data => {
     //   data.map(item => {

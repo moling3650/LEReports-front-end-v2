@@ -11,7 +11,11 @@
         <el-form-item label="条件必输" prop="query_type" required>
           <el-switch v-model="form.query_type" :active-value="1" :inactive-value="0"/>
         </el-form-item>
-        <el-form-item label="SQL" prop="orderBy">
+        <el-form-item label="SQL" prop="query_sql" v-if="(form.report_code || '').startsWith('Z_')">
+          <el-input type="textarea" rows="5" v-model.trim="form.query_sql" @keyup.enter.native="saveReport"/>
+        </el-form-item>
+
+        <el-form-item label="SQL" prop="orderBy" v-else>
           <el-input placeholder="请输入排序语句" v-model.trim="form.orderBy">
             <template slot="prepend">SELECT {fields} FROM {{form.report_code}} {where}</template>
           </el-input>
@@ -49,7 +53,7 @@ export default {
         }
         if (result.has_report) {
           return callback(new Error('该报表已存在'))
-        } else if (!result.has_object) {
+        } else if (!result.has_object && !value.startsWith('Z_')) {
           return callback(new Error('数据库没有该表或视图'))
         }
         return callback()
@@ -80,7 +84,11 @@ export default {
         if (!valid) {
           return false
         }
-        this.form.query_sql = `SELECT {fields} FROM ${this.form.report_code} {where} ${this.form.orderBy}`
+        if (this.form.report_code.startsWith('Z_')) {
+
+        } else {
+          this.form.query_sql = `SELECT {fields} FROM ${this.form.report_code} {where} ${this.form.orderBy}`
+        }
         this.$store.dispatch('saveReport', Object.assign({}, this.form)).then(() => {
           this.$message.success('保存成功!')
           this.$emit('update:reportCode', this.form.report_code)

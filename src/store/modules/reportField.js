@@ -57,6 +57,9 @@ const actions = {
     }
     return api.fetchFieldsByReportCode(reportCode).then(fields => commit('setFields', fields))
   },
+  deleteReportField ({ commit }, { report_code: reportCode, prop }) {
+    return api.deleteReportField(reportCode, prop).then(() => commit('removeReportField', prop))
+  },
   saveReportField ({ commit }, reportField) {
     return api.saveReportField(reportField).then(() => commit('updateReportField', reportField))
   },
@@ -74,6 +77,10 @@ const mutations = {
   updateReportField (state, reportField) {
     const index = state.all.findIndex(rf => rf.prop === reportField.prop)
     ~index && state.all.splice(index, 1, reportField)
+  },
+  removeReportField (state, prop) {
+    const index = state.all.findIndex(rf => rf.prop === prop)
+    ~index && state.all.splice(index, 1)
   },
   setFieldsReload (state, reload) {
     state.reload = reload

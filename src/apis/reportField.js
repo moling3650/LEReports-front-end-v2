@@ -4,6 +4,10 @@ function fetchFieldsByReportCode (reportCode) {
   return axios.get(`/DataAPI/Commom.ashx?ActType=GetColumns&reportCode=${reportCode}`).then(res => res.data)
 }
 
+function deleteReportField (reportCode, prop) {
+  return axios.post('/DataAPI/ReportData.ashx?method=deleteReportField', { queryParams: {reportCode, prop}})
+}
+
 function saveReportField (reportField) {
   return axios.post('/DataAPI/ReportData.ashx?method=updateReportField', { queryParams: reportField })
 }
@@ -22,6 +26,7 @@ function updateFieldsLabel (payload) {
 
 export default {
   fetchFieldsByReportCode,
+  deleteReportField,
   saveReportField,
   updateFieldsLabel
 }
