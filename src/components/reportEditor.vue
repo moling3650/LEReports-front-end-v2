@@ -60,6 +60,7 @@ export default {
   watch: {
     reportCode () {
       this.chartId = ''
+      this.$store.commit('setReportCode', this.reportCode)
       this.$store.dispatch('fetchFieldsByReportCode', this.reportCode)
       this.$store.dispatch('fetchChartsByReportCode', this.reportCode)
     }
