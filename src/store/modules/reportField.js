@@ -60,6 +60,17 @@ const actions = {
   deleteReportField ({ commit }, { report_code: reportCode, prop }) {
     return api.deleteReportField(reportCode, prop).then(() => commit('removeReportField', prop))
   },
+  addReportFields ({ state, rootState, dispatch }, props) {
+    const queryParams = {
+      reportCode: rootState.report.reportCode
+    }
+    const values = props.map((prop, idx) => {
+      queryParams[`prop${idx}`] = prop
+      return `(@reportCode, @prop${idx}, @prop${idx}, ${state.all.length + 1 + idx})`
+    }).join(',')
+    const sql = `INSERT INTO B_Report_Field([report_code],[prop],[label],[idx]) VALUES ${values}`
+    return api.addReportFields({ sql, queryParams }).then(() => dispatch('fetchFieldsByReportCode', rootState.report.reportCode))
+  },
   saveReportField ({ commit }, reportField) {
     return api.saveReportField(reportField).then(() => commit('updateReportField', reportField))
   },

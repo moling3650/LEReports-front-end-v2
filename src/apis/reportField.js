@@ -5,7 +5,11 @@ function fetchFieldsByReportCode (reportCode) {
 }
 
 function deleteReportField (reportCode, prop) {
-  return axios.post('/DataAPI/ReportData.ashx?method=deleteReportField', { queryParams: {reportCode, prop}})
+  return axios.post('/DataAPI/ReportData.ashx?method=deleteReportField', { queryParams: {reportCode, prop} })
+}
+
+function addReportFields (payload) {
+  return axios.post('/DataAPI/ReportData.ashx?method=addReportFields', payload)
 }
 
 function saveReportField (reportField) {
@@ -27,6 +31,7 @@ function updateFieldsLabel (payload) {
 export default {
   fetchFieldsByReportCode,
   deleteReportField,
+  addReportFields,
   saveReportField,
   updateFieldsLabel
 }

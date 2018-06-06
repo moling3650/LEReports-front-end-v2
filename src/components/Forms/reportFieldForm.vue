@@ -51,7 +51,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="visible = false">取 消</el-button>
-        <el-button type="danger" @click="deleteReportField">删 除</el-button>
+        <el-button v-if="isCustom" type="danger" @click="deleteReportField">删 除</el-button>
         <el-button type="primary" @click="saveReportField">确 定</el-button>
       </div>
     </el-dialog>

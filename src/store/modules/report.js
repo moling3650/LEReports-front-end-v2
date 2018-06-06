@@ -2,6 +2,7 @@ import api from '@/apis/report'
 
 // initial state
 const state = {
+  reportCode: '',
   all: []
 }
 
@@ -29,6 +30,9 @@ const actions = {
 
 // mutations
 const mutations = {
+  setReportCode (state, reportCode) {
+    state.reportCode = reportCode
+  },
   setReports (state, reports) {
     state.all = reports
   },

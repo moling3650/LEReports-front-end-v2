@@ -1,7 +1,8 @@
 <template>
   <div id="reportFieldEditor">
     <el-button-group class="btn-group">
-      <el-button size="mini" type="primary" @click="handleEditLabels" :disabled="!fields.length">批量编字段标签</el-button>
+      <el-button size="mini" type="success" @click="handleAddProps" :disabled="!isCustom">批量添加字段属性</el-button>
+      <el-button size="mini" type="primary" @click="handleEditLabels" :disabled="!fields.length">批量编辑字段标签</el-button>
     </el-button-group>
     <div class="table-wrap">
       <el-table v-loading="loading"
@@ -61,6 +62,9 @@ export default {
   computed: {
     fields () {
       return this.$store.getters.fields.slice((this.index - 1) * this.pageSize, this.index * this.pageSize)
+    },
+    isCustom () {
+      return this.$store.state.report.reportCode.startsWith('Z_')
     }
   },
   watch: {
@@ -81,6 +85,20 @@ export default {
   methods: {
     handleRowEdit (index, row) {
       this.$refs.reportFieldDialog.open({ ...row })
+    },
+    handleAddProps () {
+      this.$prompt('请输入字段属性，以空格分隔', '批量添加字段属性', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^[\w]+([ \w]+)?$/,
+        inputErrorMessage: '只支持英文数据下划线作为字段属性'
+      })
+        .then(({ value }) => {
+          const propSet = new Set(this.$store.state.reportField.all.map(rf => rf.prop))
+          const newProps = Array.from(new Set(value.trim().split(/\s+/).filter(p => !propSet.has(p))))
+          this.$store.dispatch('addReportFields', newProps).then(() => this.$message.success(value))
+        })
+        .catch(() => this.$message('取消输入'))
     },
     handleEditLabels () {
       this.$refs.labelsDialog.open()
