@@ -4,6 +4,7 @@ import api from '@/apis'
 import chart from '@/store/modules/chart'
 import report from '@/store/modules/report'
 import reportField from '@/store/modules/reportField'
+import subReport from '@/store/modules/subReport'
 
 Vue.use(Vuex)
 
@@ -47,7 +48,8 @@ const store = new Vuex.Store({
   modules: {
     chart,
     report,
-    reportField
+    reportField,
+    subReport
   },
   strict: process.env.NODE_ENV !== 'production'
 })
