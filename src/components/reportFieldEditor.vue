@@ -130,6 +130,6 @@ export default {
 .table-wrap {
   position: relative;
   height: 530px;
-  top: 30px;
+  top: 0px;
 }
 </style>
