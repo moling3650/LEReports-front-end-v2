@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/DataAPI': {
-        target: 'http://localhost:8070',
+        target: 'http://localhost:8081',
         pathRewrite: {
           '^/DataAPI': '/DataAPI'
         }

@@ -62,7 +62,7 @@ export default {
             report_code: this.reportCode,
             btn_text: this.form.btn_text,
             sql: this.form.sql,
-            description: this.form.description
+            description: this.form.description || null
           }
           this.$store.dispatch('saveSubReport', subReport)
             .then(() => this.$message.success({ message: '保存成功!', showClose: true, duration: 1500 }))
